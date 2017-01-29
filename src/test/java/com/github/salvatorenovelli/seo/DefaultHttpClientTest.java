@@ -1,48 +1,37 @@
 package com.github.salvatorenovelli.seo;
 
-import com.github.salvatorenovelli.seo.websiteversioning.model.PageSnapshot;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.ServerConnector;
-import org.junit.Before;
+import org.jsoup.nodes.Document;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.is;
+
+public class DefaultHttpClientTest {
 
 
-@RunWith(MockitoJUnitRunner.class)
-public class HtmlReaderTest {
-
-
-    public static final String TEST_TITLE = "Test title";
-    public static final String ROOT_PAGE_PATH = "/";
-    private HtmlReader sut;
-    @Mock private HttpClient httpClient;
+    public static final String TEST_TITLE = "Hellp Title";
     private Server testServer;
-
-    @Before
-    public void setUp() throws Exception {
-        sut = new HtmlReader(httpClient);
-    }
+    private HttpClient sut = new HttpClient();
 
     @Test
-    public void shouldRetrieveTitle() throws Exception {
+    public void get() throws Exception {
 
         givenAWebsite()
-                .havingPage(ROOT_PAGE_PATH)
+                .havingPage("/hello")
                 .withTitle(TEST_TITLE)
                 .run();
-        PageSnapshot snapshot = sut.snapshotPage(testUri(ROOT_PAGE_PATH));
-        assertThat(snapshot.getTitle(), is(TEST_TITLE));
+
+        Document htmlPage = sut.get(testUri("/hello"));
+
+        assertThat(htmlPage.title(), is(TEST_TITLE));
+
 
     }
-
 
     private TestWebsiteBuilder givenAWebsite() {
         testServer = new Server(0);
@@ -57,9 +46,4 @@ public class HtmlReaderTest {
         return new URI("http://localhost:" + localPort + url);
     }
 
-
-
-
 }
-
-
