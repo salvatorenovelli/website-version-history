@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,14 +22,34 @@ class TestWebsiteBuilder {
 
 
     private static final Logger logger = LoggerFactory.getLogger(TestWebsiteBuilder.class);
-    private final Server server;
+    private static Server server;
     Map<String, PageFields> pages = new HashMap<>();
     PageFields curPage = null;
 
-    TestWebsiteBuilder(Server server) {
-        this.server = server;
+    private TestWebsiteBuilder(Server server) {
+        TestWebsiteBuilder.server = server;
     }
 
+    public static TestWebsiteBuilder givenAWebsite() {
+        if (TestWebsiteBuilder.server != null) {
+            throw new IllegalStateException("Please use tearDownCurrentServer() in @After/ tearDown() for test isolation.");
+        }
+        return new TestWebsiteBuilder(new Server(0));
+    }
+
+    public static URI testUri(String url) throws URISyntaxException {
+        if (!server.isStarted()) {
+            throw new IllegalStateException("Sorry, you'll need to run the scenario before asking for URI. (At the moment the server port is not known)");
+        }
+        int localPort = ((ServerConnector) server.getConnectors()[0]).getLocalPort();
+        return new URI("http://localhost:" + localPort + url);
+    }
+
+
+    public static void tearDownCurrentServer() throws Exception {
+        server.stop();
+        server = null;
+    }
 
     public TestWebsiteBuilder havingPage(String pagePath) {
         curPage = new PageFields(pagePath);
