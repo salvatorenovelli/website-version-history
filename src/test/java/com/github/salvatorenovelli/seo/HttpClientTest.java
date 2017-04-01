@@ -30,7 +30,6 @@ public class HttpClientTest {
                 .run();
 
         Document htmlPage = sut.get(testUri("/hello"));
-
         assertThat(htmlPage.title(), is(TEST_TITLE));
     }
 

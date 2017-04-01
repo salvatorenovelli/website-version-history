@@ -9,6 +9,8 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.List;
+
 import static com.github.salvatorenovelli.seo.TestWebsiteBuilder.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
@@ -50,8 +52,11 @@ public class HtmlReaderTest {
                 .withH1("Test H1")
                 .run();
         PageSnapshot snapshot = sut.snapshotPage(testUri(ROOT_PAGE_PATH));
-        assertThat(snapshot.getH1(), hasSize(1));
-        assertThat(snapshot.getH1().get(0), is("Test H1"));
+
+        List<String> h1s = snapshot.getTagContents("H1");
+
+        assertThat(h1s, hasSize(1));
+        assertThat(h1s.get(0), is("Test H1"));
     }
 
     @Test
@@ -61,9 +66,12 @@ public class HtmlReaderTest {
                 .withH1("Test second H1")
                 .run();
         PageSnapshot snapshot = sut.snapshotPage(testUri(ROOT_PAGE_PATH));
-        assertThat(snapshot.getH1(), hasSize(2));
-        assertThat(snapshot.getH1().get(0), is("Test H1"));
-        assertThat(snapshot.getH1().get(1), is("Test second H1"));
+
+        List<String> h1s = snapshot.getTagContents("H1");
+
+        assertThat(h1s, hasSize(2));
+        assertThat(h1s.get(0), is("Test H1"));
+        assertThat(h1s.get(1), is("Test second H1"));
     }
 }
 
