@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 class TestWebsiteBuilder {
@@ -25,16 +27,17 @@ class TestWebsiteBuilder {
     private static Server server;
     Map<String, PageFields> pages = new HashMap<>();
     PageFields curPage = null;
+    private String h1;
 
     private TestWebsiteBuilder(Server server) {
         TestWebsiteBuilder.server = server;
     }
 
-    public static TestWebsiteBuilder givenAWebsite() {
+    public static TestWebsiteBuilder givenAWebsite(String rootPagePath) {
         if (TestWebsiteBuilder.server != null) {
             throw new IllegalStateException("Please use tearDownCurrentServer() in @After/ tearDown() for test isolation.");
         }
-        return new TestWebsiteBuilder(new Server(0));
+        return new TestWebsiteBuilder(new Server(0)).havingPage(rootPagePath);
     }
 
     public static URI testUri(String url) throws URISyntaxException {
@@ -74,9 +77,16 @@ class TestWebsiteBuilder {
         logger.info("Test server listening on http://localhost:{}", ((ServerConnector) server.getConnectors()[0]).getLocalPort());
     }
 
+    public TestWebsiteBuilder withH1(String s) {
+        curPage.addH1(s);
+        return this;
+    }
+
+
     private static class PageFields {
         private final String pagePath;
         private String title;
+        private List<String> h1s = new ArrayList<>();
 
 
         public PageFields(String pagePath) {
@@ -93,6 +103,14 @@ class TestWebsiteBuilder {
 
         public void setTitle(String title) {
             this.title = title;
+        }
+
+        public List<String> getH1() {
+            return h1s;
+        }
+
+        public void addH1(String h1) {
+            this.h1s.add(h1);
         }
     }
 
@@ -129,12 +147,18 @@ class TestWebsiteBuilder {
             sb.append("        <TITLE>").append(pageFields.getTitle()).append("</TITLE>");
             sb.append("    </HEAD>");
             sb.append("    <BODY>");
-            sb.append("        <H1>").append(pageFields.getTitle()).append("</H1>");
+            addH1s(sb, pageFields);
             sb.append("    </BODY>");
             sb.append("</HTML>");
 
             return sb;
 
+        }
+
+        private void addH1s(StringBuffer sb, PageFields pageFields) {
+            for (String h1 : pageFields.getH1()) {
+                sb.append("        <H1>").append(h1).append("</H1>");
+            }
         }
     }
 }

@@ -25,8 +25,7 @@ public class HttpClientTest {
     @Test
     public void get() throws Exception {
 
-        givenAWebsite()
-                .havingPage("/hello")
+        givenAWebsite("/hello")
                 .withTitle(TEST_TITLE)
                 .run();
 
