@@ -1,11 +1,9 @@
-package com.github.salvatorenovelli.seo;
+package com.github.salvatorenovelli.seo.websiteversioning;
 
-import org.eclipse.jetty.server.Server;
 import org.jsoup.nodes.Document;
 import org.junit.After;
 import org.junit.Test;
 
-import static com.github.salvatorenovelli.seo.TestWebsiteBuilder.*;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -18,16 +16,16 @@ public class HttpClientTest {
 
     @After
     public void tearDown() throws Exception {
-        tearDownCurrentServer();
+        TestWebsiteBuilder.tearDownCurrentServer();
     }
 
     @Test
     public void get() throws Exception {
-        givenAWebsite("/hello")
+        TestWebsiteBuilder.givenAWebsite("/hello")
                 .withTitle(TEST_TITLE)
                 .run();
 
-        Document htmlPage = sut.get(testUri("/hello"));
+        Document htmlPage = sut.get(TestWebsiteBuilder.testUri("/hello"));
         assertThat(htmlPage.title(), is(TEST_TITLE));
     }
 

@@ -1,4 +1,4 @@
-package com.github.salvatorenovelli.seo;
+package com.github.salvatorenovelli.seo.websiteversioning;
 
 
 import org.jsoup.Connection;

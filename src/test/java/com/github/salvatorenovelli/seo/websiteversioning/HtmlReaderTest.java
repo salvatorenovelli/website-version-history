@@ -1,17 +1,17 @@
-package com.github.salvatorenovelli.seo;
+package com.github.salvatorenovelli.seo.websiteversioning;
 
 import com.github.salvatorenovelli.seo.websiteversioning.model.PageSnapshot;
-import org.eclipse.jetty.server.Server;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
-import static com.github.salvatorenovelli.seo.TestWebsiteBuilder.*;
+import static com.github.salvatorenovelli.seo.websiteversioning.TestWebsiteBuilder.givenAWebsite;
+import static com.github.salvatorenovelli.seo.websiteversioning.TestWebsiteBuilder.tearDownCurrentServer;
+import static com.github.salvatorenovelli.seo.websiteversioning.TestWebsiteBuilder.testUri;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;

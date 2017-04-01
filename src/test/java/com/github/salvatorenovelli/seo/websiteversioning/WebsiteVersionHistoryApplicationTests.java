@@ -1,4 +1,4 @@
-package com.github.salvatorenovelli.seo;
+package com.github.salvatorenovelli.seo.websiteversioning;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
