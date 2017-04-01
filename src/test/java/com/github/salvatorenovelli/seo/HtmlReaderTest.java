@@ -24,8 +24,6 @@ public class HtmlReaderTest {
     public static final String TEST_TITLE = "Test title";
     public static final String ROOT_PAGE_PATH = "/";
     private HtmlReader sut;
-    @Mock private HttpClient httpClient;
-    private Server testServer;
 
     @Before
     public void setUp() throws Exception {
@@ -47,9 +45,9 @@ public class HtmlReaderTest {
     }
 
     @Test
-    public void shouldReadH1() throws Exception {
+    public void shouldReadTags() throws Exception {
         givenAWebsite(ROOT_PAGE_PATH)
-                .withH1("Test H1")
+                .withTag("H1", "Test H1")
                 .run();
         PageSnapshot snapshot = sut.snapshotPage(testUri(ROOT_PAGE_PATH));
 
@@ -60,10 +58,10 @@ public class HtmlReaderTest {
     }
 
     @Test
-    public void shouldReadMultipleH1() throws Exception {
+    public void shouldReadMultipleTags() throws Exception {
         givenAWebsite(ROOT_PAGE_PATH)
-                .withH1("Test H1")
-                .withH1("Test second H1")
+                .withTag("H1", "Test H1")
+                .withTag("H1", "Test second H1")
                 .run();
         PageSnapshot snapshot = sut.snapshotPage(testUri(ROOT_PAGE_PATH));
 
@@ -72,6 +70,26 @@ public class HtmlReaderTest {
         assertThat(h1s, hasSize(2));
         assertThat(h1s.get(0), is("Test H1"));
         assertThat(h1s.get(1), is("Test second H1"));
+    }
+
+    @Test
+    public void shouldReadMultipleDiverseTags() throws Exception {
+        givenAWebsite(ROOT_PAGE_PATH)
+                .withTag("H1", "Test H1")
+                .withTag("H1", "Test second H1")
+                .withTag("H2", "Test H2")
+                .run();
+
+        PageSnapshot snapshot = sut.snapshotPage(testUri(ROOT_PAGE_PATH));
+
+        List<String> h1s = snapshot.getTagContents("H1");
+        List<String> h2s = snapshot.getTagContents("H2");
+
+        assertThat(h1s, hasSize(2));
+        assertThat(h2s, hasSize(1));
+
+        assertThat(h2s.get(0), is("Test H2"));
+
     }
 }
 

@@ -25,9 +25,8 @@ class TestWebsiteBuilder {
 
     private static final Logger logger = LoggerFactory.getLogger(TestWebsiteBuilder.class);
     private static Server server;
-    Map<String, PageFields> pages = new HashMap<>();
-    PageFields curPage = null;
-    private String h1;
+    private PageFields curPage = null;
+    private Map<String, PageFields> pages = new HashMap<>();
 
     private TestWebsiteBuilder(Server server) {
         TestWebsiteBuilder.server = server;
@@ -77,8 +76,8 @@ class TestWebsiteBuilder {
         logger.info("Test server listening on http://localhost:{}", ((ServerConnector) server.getConnectors()[0]).getLocalPort());
     }
 
-    public TestWebsiteBuilder withH1(String s) {
-        curPage.addH1(s);
+    public TestWebsiteBuilder withTag(String tagName, String content) {
+        curPage.addTag(tagName, content);
         return this;
     }
 
@@ -86,7 +85,7 @@ class TestWebsiteBuilder {
     private static class PageFields {
         private final String pagePath;
         private String title;
-        private List<String> h1s = new ArrayList<>();
+        private Map<String, List<String>> tags = new HashMap<>();
 
 
         public PageFields(String pagePath) {
@@ -105,12 +104,10 @@ class TestWebsiteBuilder {
             this.title = title;
         }
 
-        public List<String> getH1() {
-            return h1s;
-        }
 
-        public void addH1(String h1) {
-            this.h1s.add(h1);
+        public void addTag(String tagName, String content) {
+            this.tags.computeIfAbsent(tagName, k -> new ArrayList<>());
+            this.tags.get(tagName).add(content);
         }
     }
 
@@ -141,24 +138,27 @@ class TestWebsiteBuilder {
 
         private StringBuffer renderPage(PageFields pageFields) {
             StringBuffer sb = new StringBuffer();
-
             sb.append("<HTML>");
             sb.append("    <HEAD>");
             sb.append("        <TITLE>").append(pageFields.getTitle()).append("</TITLE>");
             sb.append("    </HEAD>");
             sb.append("    <BODY>");
-            addH1s(sb, pageFields);
+            addTags(sb, pageFields);
             sb.append("    </BODY>");
             sb.append("</HTML>");
-
             return sb;
 
         }
 
-        private void addH1s(StringBuffer sb, PageFields pageFields) {
-            for (String h1 : pageFields.getH1()) {
-                sb.append("        <H1>").append(h1).append("</H1>");
+        private void addTags(StringBuffer sb, PageFields pageFields) {
+
+            for (String tag : pageFields.tags.keySet()) {
+                for (String content : pageFields.tags.get(tag)) {
+                    sb.append("        <").append(tag).append(">").append(content).append("</").append(tag).append(">");
+                }
             }
+
+
         }
     }
 }
