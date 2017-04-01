@@ -13,7 +13,6 @@ public class HttpClientTest {
 
 
     public static final String TEST_TITLE = "Hello Title";
-    private Server testServer = new Server(0);
     private HttpClient sut = new HttpClient();
 
 
@@ -24,7 +23,6 @@ public class HttpClientTest {
 
     @Test
     public void get() throws Exception {
-
         givenAWebsite("/hello")
                 .withTitle(TEST_TITLE)
                 .run();
