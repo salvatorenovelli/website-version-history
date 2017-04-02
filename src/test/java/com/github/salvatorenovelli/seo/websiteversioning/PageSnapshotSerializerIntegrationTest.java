@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 
 
-public class PageSnapshotSerializerTest {
+public class PageSnapshotSerializerIntegrationTest {
 
 
     private static final String HTML = "" +
@@ -49,11 +49,17 @@ public class PageSnapshotSerializerTest {
         Document page = Jsoup.parse(HTML);
 
         PageSnapshot snapshot = new PageSnapshot(URI.create("http://www.example.com/path/to/resource?parama=1234&otherparam=456#fragment"), page);
+
         PageSnapshotSerializer serializer = new PageSnapshotSerializer(new ObjectMapper().writerWithDefaultPrettyPrinter());
         Path jsonFileOutputFile = temporaryFolder.getRoot().toPath().resolve("path.json");
         serializer.serialize(snapshot, jsonFileOutputFile);
         jsonDocument = JsonPath.parse(jsonFileOutputFile.toFile());
 
+    }
+
+    @Test
+    public void shouldSaveURIWithoutFragment() throws Exception {
+        assertThat(jsonDocument.read("$.uri"), is("http://www.example.com/path/to/resource?parama=1234&otherparam=456"));
     }
 
     @Test
@@ -76,14 +82,9 @@ public class PageSnapshotSerializerTest {
     }
 
     @Test
-    public void shouldSaveURIWithoutFragment() throws Exception {
-        assertThat(jsonDocument.read("$.uri"), is("http://www.example.com/path/to/resource?parama=1234&otherparam=456"));
-    }
-
-    @Test
     public void shouldSaveMetaDescrition() throws Exception {
-        assertThat(jsonDocument.read("$.metaDescritions"), hasSize(1));
-        assertThat(jsonDocument.read("$.metaDescritions[0]"), is("Meta description"));
+        assertThat(jsonDocument.read("$.metaDescriptions"), hasSize(1));
+        assertThat(jsonDocument.read("$.metaDescriptions[0]"), is("Meta description"));
     }
 
     @Test
