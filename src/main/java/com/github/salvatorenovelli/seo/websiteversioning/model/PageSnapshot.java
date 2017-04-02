@@ -5,28 +5,38 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.List;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 @Getter
 public class PageSnapshot implements Serializable {
+    private final URI uri;
     private final String title;
     private final List<String> h1s;
     private final List<String> h2s;
+    private final List<String> metaDescritions;
 
-    public PageSnapshot(Document page) {
-        title = page.title();
-        h1s = getTagContents(page, "H1");
-        h2s = getTagContents(page, "H2");
+    public PageSnapshot(URI uri, Document page) {
+        this.uri = removeFragment(uri);
+        this.title = page.title();
+        this.h1s = getTagContents(page, "H1");
+        this.h2s = getTagContents(page, "H2");
+        this.metaDescritions = extractFromTag(page.head(), "meta[name=\"description\"]", element -> element.attr("content"));
     }
 
-    private List<String> getTagContents(Document page, String tag) {
-        return StreamSupport.stream(page.select(tag).spliterator(), false)
-                .map(Element::html).collect(Collectors.toList());
+    private URI removeFragment(URI uri) {
+        return URI.create(uri.toString().split("#")[0]);
     }
 
-    public List<String> getH2s() {
-        return h2s;
+    private List<String> extractFromTag(Element element, String filter, Function<Element, String> mapper) {
+        return StreamSupport.stream(element.select(filter).spliterator(), false)
+                .map(mapper).collect(Collectors.toList());
+    }
+
+    private List<String> getTagContents(Element page, String tag) {
+        return extractFromTag(page, tag, Element::html);
     }
 }

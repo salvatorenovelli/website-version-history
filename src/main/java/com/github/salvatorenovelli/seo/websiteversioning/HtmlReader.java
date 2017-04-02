@@ -16,6 +16,6 @@ public class HtmlReader {
     }
 
     public PageSnapshot snapshotPage(URI s) throws IOException {
-        return new PageSnapshot(httpClient.get(s));
+        return new PageSnapshot(s, httpClient.get(s));
     }
 }
