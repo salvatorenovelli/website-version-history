@@ -17,6 +17,7 @@ public class PageStore {
     }
 
     public void storePage(URI requestUri, PageSnapshot pageSnapshot) throws IOException {
+
         String path = extractPath(requestUri);
         String lastPathSegment = extractLastPathSegment(requestUri);
         Path baseResourcePath = basePath.resolve(path);

@@ -51,7 +51,7 @@ public class HtmlReaderTest {
                 .run();
         PageSnapshot snapshot = sut.snapshotPage(testUri(ROOT_PAGE_PATH));
 
-        List<String> h1s = snapshot.getTagContents("H1");
+        List<String> h1s = snapshot.getH1s();
 
         assertThat(h1s, hasSize(1));
         assertThat(h1s.get(0), is("Test H1"));
@@ -65,7 +65,7 @@ public class HtmlReaderTest {
                 .run();
         PageSnapshot snapshot = sut.snapshotPage(testUri(ROOT_PAGE_PATH));
 
-        List<String> h1s = snapshot.getTagContents("H1");
+        List<String> h1s = snapshot.getH1s();
 
         assertThat(h1s, hasSize(2));
         assertThat(h1s.get(0), is("Test H1"));
@@ -82,8 +82,8 @@ public class HtmlReaderTest {
 
         PageSnapshot snapshot = sut.snapshotPage(testUri(ROOT_PAGE_PATH));
 
-        List<String> h1s = snapshot.getTagContents("H1");
-        List<String> h2s = snapshot.getTagContents("H2");
+        List<String> h1s = snapshot.getH1s();
+        List<String> h2s = snapshot.getH2s();
 
         assertThat(h1s, hasSize(2));
         assertThat(h2s, hasSize(1));
