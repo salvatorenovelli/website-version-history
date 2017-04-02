@@ -1,7 +1,6 @@
 package com.github.salvatorenovelli.seo.websiteversioning;
 
 import com.github.salvatorenovelli.seo.websiteversioning.model.PageSnapshot;
-import org.hamcrest.Matchers;
 import org.jsoup.nodes.Document;
 import org.junit.Before;
 import org.junit.Rule;
@@ -16,9 +15,8 @@ import java.io.File;
 import java.net.URI;
 import java.nio.file.Path;
 
-import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.verify;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -68,6 +66,6 @@ public class PageStoreTest {
                 .toPath()
                 .resolve("path/of/request/" + lastSegmentOfPathExcludingFragment.hashCode() + ".json");
 
-        Mockito.verify(snapShotSerializer).serialize(snapshot, filePath);
+        verify(snapShotSerializer).serialize(snapshot, filePath);
     }
 }
