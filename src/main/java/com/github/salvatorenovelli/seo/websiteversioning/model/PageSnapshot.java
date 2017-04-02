@@ -3,6 +3,7 @@ package com.github.salvatorenovelli.seo.websiteversioning.model;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
+import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -24,5 +25,6 @@ public class PageSnapshot {
     public String getTitle() {
         return title;
     }
+
 
 }
