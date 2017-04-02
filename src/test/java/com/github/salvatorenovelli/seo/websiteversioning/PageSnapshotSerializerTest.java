@@ -57,19 +57,9 @@ public class PageSnapshotSerializerTest {
 
     @Test
     public void serializeShouldSaveTitle() throws Exception {
-
-
         DocumentContext jsonDocument = JsonPath.parse(jsonFileOutputFile.toFile());
 
         assertThat(jsonDocument.read("$.title"), is("Title"));
-
-        assertThat(jsonDocument.read("$.h1s"), hasSize(2));
-        assertThat(jsonDocument.read("$.h1s[0]"), is("First H1"));
-        assertThat(jsonDocument.read("$.h1s[1]"), is("Second H1"));
-
-        assertThat(jsonDocument.read("$.h2s"), hasSize(2));
-        assertThat(jsonDocument.read("$.h2s[0]"), is("First H2"));
-        assertThat(jsonDocument.read("$.h2s[1]"), is("Second H2"));
     }
 
     @Test
@@ -79,7 +69,6 @@ public class PageSnapshotSerializerTest {
         assertThat(jsonDocument.read("$.h1s"), hasSize(2));
         assertThat(jsonDocument.read("$.h1s[0]"), is("First H1"));
         assertThat(jsonDocument.read("$.h1s[1]"), is("Second H1"));
-
     }
 
     @Test
