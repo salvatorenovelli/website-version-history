@@ -35,7 +35,7 @@ public class PageStoreTest {
 
     @Test
     public void shouldStorePageInTheProperPath() throws Exception {
-        URI uri = URI.create("http://www.example.com/path/of/request/request");
+        URI uri = URI.create("http://www.example.com/path/of/request/resource");
         sut.storePage(uri, new PageSnapshot(document));
         File path = temporaryFolder.getRoot().toPath().resolve("path/of/request/").toFile();
         assertTrue(path.exists());
@@ -46,7 +46,7 @@ public class PageStoreTest {
     public void shouldStoreUnicodePageInTheProperPath() throws Exception {
         URI uri = URI.create("http://www.example.com/sayfa/teşekkür/kayit-onay-tesekkurler");
         sut.storePage(uri, new PageSnapshot(document));
-        File path = temporaryFolder.getRoot().toPath().resolve("sayfa/teşekkür/kayit-onay-tesekkurler").toFile();
+        File path = temporaryFolder.getRoot().toPath().resolve("sayfa/teşekkür/").toFile();
         assertTrue(path.exists());
         assertTrue(path.isDirectory());
     }
