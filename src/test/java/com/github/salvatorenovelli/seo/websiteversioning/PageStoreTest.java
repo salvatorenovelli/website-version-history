@@ -1,7 +1,6 @@
 package com.github.salvatorenovelli.seo.websiteversioning;
 
 import com.github.salvatorenovelli.seo.websiteversioning.model.PageSnapshot;
-import org.jsoup.nodes.Document;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -23,9 +22,9 @@ public class PageStoreTest {
 
 
     @Rule public TemporaryFolder temporaryFolder = new TemporaryFolder();
-    @Mock private Document document;
     private PageStore sut;
     @Mock private PageSnapshotSerializer snapShotSerializer;
+    @Mock private PageSnapshot pageSnapshot;
 
     @Before
     public void setUp() throws Exception {
@@ -36,7 +35,7 @@ public class PageStoreTest {
     @Test
     public void shouldStorePageInTheProperPath() throws Exception {
         URI uri = URI.create("http://www.example.com/path/of/request/resource");
-        sut.storePage(uri, new PageSnapshot(document));
+        sut.storePage(uri, pageSnapshot);
         File path = temporaryFolder.getRoot().toPath().resolve("path/of/request/").toFile();
         assertTrue(path.exists());
         assertTrue(path.isDirectory());
@@ -45,7 +44,7 @@ public class PageStoreTest {
     @Test
     public void shouldStoreUnicodePageInTheProperPath() throws Exception {
         URI uri = URI.create("http://www.example.com/sayfa/teşekkür/kayit-onay-tesekkurler");
-        sut.storePage(uri, new PageSnapshot(document));
+        sut.storePage(uri, pageSnapshot);
         File path = temporaryFolder.getRoot().toPath().resolve("sayfa/teşekkür/").toFile();
         assertTrue(path.exists());
         assertTrue(path.isDirectory());
@@ -55,8 +54,7 @@ public class PageStoreTest {
     @Test
     public void shouldNameTheStoredFileAsTheLastSegmentHashCodeWithoutFragment() throws Exception {
         URI uri = URI.create("http://www.example.com/path/of/request/page.jsp&someParam=1#fragment");
-        PageSnapshot snapshot = new PageSnapshot(document);
-        sut.storePage(uri, snapshot);
+        sut.storePage(uri, pageSnapshot);
 
         String lastSegmentOfPathExcludingFragment = "page.jsp&someParam=1";
 
@@ -65,6 +63,6 @@ public class PageStoreTest {
                 .toPath()
                 .resolve("path/of/request/" + lastSegmentOfPathExcludingFragment.hashCode() + ".json");
 
-        verify(snapShotSerializer).serialize(snapshot, filePath);
+        verify(snapShotSerializer).serialize(pageSnapshot, filePath);
     }
 }
