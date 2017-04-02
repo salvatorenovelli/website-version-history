@@ -6,6 +6,7 @@ import org.apache.commons.io.FileUtils;
 import java.io.IOException;
 import java.net.URI;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class PageStore {
     private final Path basePath;
@@ -15,7 +16,24 @@ public class PageStore {
     }
 
     public void storePage(URI requestUri, PageSnapshot pageSnapshot) throws IOException {
-        FileUtils.forceMkdir(basePath.resolve("." + requestUri.getPath()).toFile());
+        String path = extractPath(requestUri);
+        String lastPathSegment = extractLastPathSegment(requestUri);
+
+        Path baseResourcePath = basePath.resolve("." + path);
+
+
+        FileUtils.forceMkdir(baseResourcePath.toFile());
+        FileUtils.touch(baseResourcePath.resolve(lastPathSegment.hashCode() + ".json").toFile());
+    }
+
+    private String extractPath(URI requestUri) {
+        String path = requestUri.getPath();
+        return path.substring(0, path.lastIndexOf("/"));
+    }
+
+    private String extractLastPathSegment(URI uri) {
+        String[] segments = uri.getPath().split("/");
+        return segments[segments.length - 1];
     }
 
 

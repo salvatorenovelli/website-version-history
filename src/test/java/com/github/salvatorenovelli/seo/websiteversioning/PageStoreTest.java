@@ -12,6 +12,9 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 import java.io.File;
 import java.net.URI;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertTrue;
 
@@ -32,7 +35,16 @@ public class PageStoreTest {
 
     @Test
     public void shouldStorePageInTheProperPath() throws Exception {
-        URI uri = URI.create("http://everydayme.com.tr/sayfa/teşekkür/kayit-onay-tesekkurler");
+        URI uri = URI.create("http://www.example.com/path/of/request/request");
+        sut.storePage(uri, new PageSnapshot(document));
+        File path = temporaryFolder.getRoot().toPath().resolve("path/of/request/").toFile();
+        assertTrue(path.exists());
+        assertTrue(path.isDirectory());
+    }
+
+    @Test
+    public void shouldStoreUnicodePageInTheProperPath() throws Exception {
+        URI uri = URI.create("http://www.example.com/sayfa/teşekkür/kayit-onay-tesekkurler");
         sut.storePage(uri, new PageSnapshot(document));
         File path = temporaryFolder.getRoot().toPath().resolve("sayfa/teşekkür/kayit-onay-tesekkurler").toFile();
         assertTrue(path.exists());
@@ -41,10 +53,17 @@ public class PageStoreTest {
 
 
     @Test
-    public void shouldTheFileInTheProperPath() throws Exception {
-        URI uri = URI.create("http://www.example.com/path/of/request/page.html");
+    public void shouldNameTheStoredFileAsTheLastSegmentHashCodeWithoutFragment() throws Exception {
+        URI uri = URI.create("http://www.example.com/path/of/request/page.jsp&someParam=1#fragment");
         sut.storePage(uri, new PageSnapshot(document));
-        File file = temporaryFolder.getRoot().toPath().resolve("path/of/request/path.html").toFile();
+
+        String lastSegmentOfPathExcludingFragment = "page.jsp&someParam=1";
+
+        File file = temporaryFolder
+                .getRoot()
+                .toPath()
+                .resolve("path/of/request/" + lastSegmentOfPathExcludingFragment.hashCode() + ".json")
+                .toFile();
 
         assertTrue(file.exists());
         assertTrue(file.isFile());
