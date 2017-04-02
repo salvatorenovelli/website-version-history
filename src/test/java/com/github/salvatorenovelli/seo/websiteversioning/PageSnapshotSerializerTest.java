@@ -27,6 +27,7 @@ public class PageSnapshotSerializerTest {
             " <head>" +
             "  <title>Title</title>" +
             "  <meta name=\"description\" content=\"Meta description\">" +
+            "  <link href=\"http://www.example.com/canonical-version-of-page/\" rel=\"canonical\" />" +
             " </head>" +
             " <body>" +
             "  <H1>First H1</H1>" +
@@ -83,5 +84,11 @@ public class PageSnapshotSerializerTest {
     public void shouldSaveMetaDescrition() throws Exception {
         assertThat(jsonDocument.read("$.metaDescritions"), hasSize(1));
         assertThat(jsonDocument.read("$.metaDescritions[0]"), is("Meta description"));
+    }
+
+    @Test
+    public void shouldSaveCanonicalTag() throws Exception {
+        assertThat(jsonDocument.read("$.canonicals"), hasSize(1));
+        assertThat(jsonDocument.read("$.canonicals[0]"), is("http://www.example.com/canonical-version-of-page/"));
     }
 }
