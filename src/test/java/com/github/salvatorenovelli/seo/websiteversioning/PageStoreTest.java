@@ -15,6 +15,7 @@ import java.nio.file.Path;
 
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 
 @RunWith(MockitoJUnitRunner.class)
@@ -34,8 +35,8 @@ public class PageStoreTest {
 
     @Test
     public void shouldStorePageInTheProperPath() throws Exception {
-        URI uri = URI.create("http://www.example.com/path/of/request/resource");
-        sut.storePage(uri, pageSnapshot);
+        when(pageSnapshot.getUri()).thenReturn(URI.create("http://www.example.com/path/of/request/resource"));
+        sut.storePage(pageSnapshot);
         File path = temporaryFolder.getRoot().toPath().resolve("path/of/request/").toFile();
         assertTrue(path.exists());
         assertTrue(path.isDirectory());
@@ -43,8 +44,8 @@ public class PageStoreTest {
 
     @Test
     public void shouldStoreUnicodePageInTheProperPath() throws Exception {
-        URI uri = URI.create("http://www.example.com/sayfa/teşekkür/kayit-onay-tesekkurler");
-        sut.storePage(uri, pageSnapshot);
+        when(pageSnapshot.getUri()).thenReturn(URI.create("http://www.example.com/sayfa/teşekkür/kayit-onay-tesekkurler"));
+        sut.storePage(pageSnapshot);
         File path = temporaryFolder.getRoot().toPath().resolve("sayfa/teşekkür/").toFile();
         assertTrue(path.exists());
         assertTrue(path.isDirectory());
@@ -53,8 +54,8 @@ public class PageStoreTest {
 
     @Test
     public void shouldNameTheStoredFileAsTheLastSegmentHashCodeWithoutFragment() throws Exception {
-        URI uri = URI.create("http://www.example.com/path/of/request/page.jsp&someParam=1#fragment");
-        sut.storePage(uri, pageSnapshot);
+        when(pageSnapshot.getUri()).thenReturn(URI.create("http://www.example.com/path/of/request/page.jsp&someParam=1#fragment"));
+        sut.storePage(pageSnapshot);
 
         String lastSegmentOfPathExcludingFragment = "page.jsp&someParam=1";
 
@@ -62,6 +63,21 @@ public class PageStoreTest {
                 .getRoot()
                 .toPath()
                 .resolve("path/of/request/" + lastSegmentOfPathExcludingFragment.hashCode() + ".json");
+
+        verify(snapShotSerializer).serialize(pageSnapshot, filePath);
+    }
+
+    @Test
+    public void shouldWorkWithNoPathAtAll() throws Exception {
+        when(pageSnapshot.getUri()).thenReturn(URI.create("http://www.example.com"));
+        sut.storePage(pageSnapshot);
+
+        String lastSegmentOfPathExcludingFragment = "";
+
+        Path filePath = temporaryFolder
+                .getRoot()
+                .toPath()
+                .resolve(lastSegmentOfPathExcludingFragment.hashCode() + ".json");
 
         verify(snapShotSerializer).serialize(pageSnapshot, filePath);
     }

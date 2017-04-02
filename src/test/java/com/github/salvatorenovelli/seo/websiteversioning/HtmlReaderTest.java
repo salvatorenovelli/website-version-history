@@ -1,5 +1,6 @@
 package com.github.salvatorenovelli.seo.websiteversioning;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.salvatorenovelli.seo.websiteversioning.model.PageSnapshot;
 import org.junit.After;
 import org.junit.Before;
@@ -7,11 +8,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.nio.file.Paths;
 import java.util.List;
 
-import static com.github.salvatorenovelli.seo.websiteversioning.TestWebsiteBuilder.givenAWebsite;
-import static com.github.salvatorenovelli.seo.websiteversioning.TestWebsiteBuilder.tearDownCurrentServer;
-import static com.github.salvatorenovelli.seo.websiteversioning.TestWebsiteBuilder.testUri;
+import static com.github.salvatorenovelli.seo.websiteversioning.TestWebsiteBuilder.*;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;

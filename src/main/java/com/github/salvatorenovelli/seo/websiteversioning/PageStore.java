@@ -16,8 +16,9 @@ public class PageStore {
         this.snapShotSerializer = snapShotSerializer;
     }
 
-    public void storePage(URI requestUri, PageSnapshot pageSnapshot) throws IOException {
+    public void storePage(PageSnapshot pageSnapshot) throws IOException {
 
+        URI requestUri = pageSnapshot.getUri();
         String path = extractPath(requestUri);
         String lastPathSegment = extractLastPathSegment(requestUri);
         Path baseResourcePath = basePath.resolve(path);
@@ -29,7 +30,12 @@ public class PageStore {
 
     private String extractPath(URI requestUri) {
         String path = requestUri.getPath();
-        return path.substring(1, path.lastIndexOf("/"));
+        int endIndex = path.lastIndexOf("/");
+        if (endIndex > 0) {
+            return path.substring(1, endIndex);
+        } else {
+            return "";
+        }
     }
 
     private String extractLastPathSegment(URI uri) {

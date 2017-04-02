@@ -18,4 +18,8 @@ public class HtmlReader {
     public PageSnapshot snapshotPage(URI s) throws IOException {
         return new PageSnapshot(s, httpClient.get(s));
     }
+
+    public PageSnapshot snapshotPage(String uri) throws IOException {
+        return snapshotPage(URI.create(uri));
+    }
 }
