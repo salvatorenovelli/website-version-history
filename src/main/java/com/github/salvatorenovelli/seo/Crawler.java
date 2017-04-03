@@ -46,13 +46,11 @@ public class Crawler {
                 StreamSupport.stream(Jsoup.connect(uri.toString()).get().select("a").spliterator(), true)
                         .map(element -> element.attr("href"))
                         .filter(this::isCurrentDomain)
-                        .forEach(s -> {
-                            consumedLinks.computeIfAbsent(s, s1 -> {
-                                System.out.println("Discovered:" + s + " in " + uri);
-                                new PageCrawler(URI.create(s1), uriMapper).fork();
-                                return 1;
-                            });
-                        });
+                        .forEach(s -> consumedLinks.computeIfAbsent(s, s1 -> {
+                            System.out.println("Discovered:" + s + " in " + uri);
+                            new PageCrawler(URI.create(s1), uriMapper).fork();
+                            return 1;
+                        }));
             } catch (IOException e) {
                 System.out.println("Error while crawling: " + uri + ": " + e.toString());
             }
