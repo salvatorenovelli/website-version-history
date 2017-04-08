@@ -1,6 +1,5 @@
 package com.github.salvatorenovelli.seo.websiteversioning.crawler;
 
-import com.github.salvatorenovelli.seo.websiteversioning.Crawler;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.EntityNotFoundException;
@@ -9,21 +8,21 @@ import java.util.Optional;
 
 
 @Component
-public class CrawlerManager {
+public class WorkerManager {
 
 
-    private final CrawlerRepository repository;
+    private final WorkerRepository repository;
 
-    public CrawlerManager(CrawlerRepository repository) {
+    public WorkerManager(WorkerRepository repository) {
         this.repository = repository;
     }
 
 
     @Transactional
-    public Optional<Crawler> getCrawler(String baseDomain, String crawlerId) {
+    public Optional<Worker> getWorker(String workerId) {
         try {
-            CrawlerDTO one = repository.getOne(crawlerId);
-            return Optional.of(new Crawler(baseDomain, one.getId()));
+            WorkerDTO one = repository.getOne(workerId);
+            return Optional.of(new Worker(one.getId()));
         } catch (EntityNotFoundException e) {
             return Optional.empty();
         }

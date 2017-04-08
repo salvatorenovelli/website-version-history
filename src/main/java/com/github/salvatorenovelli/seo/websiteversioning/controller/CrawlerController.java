@@ -1,7 +1,7 @@
 package com.github.salvatorenovelli.seo.websiteversioning.controller;
 
 
-import com.github.salvatorenovelli.seo.websiteversioning.crawler.CrawlerManager;
+import com.github.salvatorenovelli.seo.websiteversioning.crawler.WorkerManager;
 import com.github.salvatorenovelli.seo.websiteversioning.model.CrawlStartResponse;
 import com.github.salvatorenovelli.seo.websiteversioning.model.CreateCrawlerRequest;
 import org.springframework.web.bind.annotation.*;
@@ -12,10 +12,10 @@ import org.springframework.web.bind.annotation.*;
 public class CrawlerController {
 
 
-    private final CrawlerManager crawlerManager;
+    private final WorkerManager workerManager;
 
-    public CrawlerController(CrawlerManager crawlerManager) {
-        this.crawlerManager = crawlerManager;
+    public CrawlerController(WorkerManager workerManager) {
+        this.workerManager = workerManager;
     }
 
     @PostMapping("/create")

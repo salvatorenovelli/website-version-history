@@ -1,6 +1,6 @@
 package com.github.salvatorenovelli.seo.websiteversioning.controller;
 
-import com.github.salvatorenovelli.seo.websiteversioning.crawler.CrawlerManager;
+import com.github.salvatorenovelli.seo.websiteversioning.crawler.WorkerManager;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,12 +17,12 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class CrawlerControllerTest {
 
     private MockMvc mvc;
-    @Mock private CrawlerManager crawlerManager;
+    @Mock private WorkerManager workerManager;
 
     @Before
     public void setup() {
         mvc = MockMvcBuilders
-                .standaloneSetup(new CrawlerController(crawlerManager))
+                .standaloneSetup(new CrawlerController(workerManager))
                 .build();
     }
 

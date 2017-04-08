@@ -1,6 +1,5 @@
 package com.github.salvatorenovelli.seo.websiteversioning.crawler;
 
-import com.github.salvatorenovelli.seo.websiteversioning.Crawler;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,30 +15,38 @@ import static org.junit.Assert.*;
 
 @DataJpaTest
 @RunWith(SpringRunner.class)
-public class CrawlerManagerTest {
+public class WorkerManagerTest {
 
 
     private static final String CRAWLER_ID = "ABCD";
     @Autowired
-    private CrawlerRepository repository;
-    private CrawlerManager crawlerManager;
+    private WorkerRepository repository;
+    private WorkerManager workerManager;
 
     @Before
     public void setUp() throws Exception {
-        repository.save(new CrawlerDTO(CRAWLER_ID));
-        crawlerManager = new CrawlerManager(repository);
+        repository.save(new WorkerDTO(CRAWLER_ID));
+        workerManager = new WorkerManager(repository);
     }
 
     @Test
     public void shouldReturnTheCrawlerIfItExist() throws Exception {
-        Optional<Crawler> crawler = crawlerManager.getCrawler("example.com", CRAWLER_ID);
+        Optional<Worker> crawler = workerManager.getWorker(CRAWLER_ID);
         assertTrue(crawler.isPresent());
         assertThat(crawler.get().getId(), is(CRAWLER_ID));
     }
 
     @Test
     public void shouldReturnNoneIfTheCrawlerDoesNotExist() throws Exception {
-        Optional<Crawler> crawler = crawlerManager.getCrawler("example.com", "ZZZZZZZ");
+        Optional<Worker> crawler = workerManager.getWorker("ZZZZZZZ");
         assertFalse(crawler.isPresent());
+    }
+
+    @Test
+    public void onceCreatedItShouldAlwaysRetrieveTheSameInstance() throws Exception {
+        Optional<Worker> crawler1 = workerManager.getWorker(CRAWLER_ID);
+        Optional<Worker> crawler2 = workerManager.getWorker(CRAWLER_ID);
+
+
     }
 }

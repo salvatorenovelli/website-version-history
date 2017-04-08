@@ -11,7 +11,7 @@ import javax.persistence.Id;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class CrawlerDTO {
+public class WorkerDTO {
     @Id
     private String id;
 }
