@@ -44,9 +44,10 @@ public class WorkerManagerTest {
 
     @Test
     public void onceCreatedItShouldAlwaysRetrieveTheSameInstance() throws Exception {
-        Optional<Worker> crawler1 = workerManager.getWorker(CRAWLER_ID);
-        Optional<Worker> crawler2 = workerManager.getWorker(CRAWLER_ID);
+        Optional<Worker> worker1 = workerManager.getWorker(CRAWLER_ID);
+        Optional<Worker> worker2 = workerManager.getWorker(CRAWLER_ID);
 
+        assertEquals(worker1, worker2);
 
     }
 }

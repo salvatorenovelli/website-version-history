@@ -2,9 +2,10 @@ package com.github.salvatorenovelli.seo.websiteversioning.crawler;
 
 import org.springframework.stereotype.Component;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 @Component
@@ -13,6 +14,8 @@ public class WorkerManager {
 
     private final WorkerRepository repository;
 
+    private final Map<String, Worker> instances = new ConcurrentHashMap<>();
+
     public WorkerManager(WorkerRepository repository) {
         this.repository = repository;
     }
@@ -20,10 +23,9 @@ public class WorkerManager {
 
     @Transactional
     public Optional<Worker> getWorker(String workerId) {
-        try {
-            WorkerDTO one = repository.getOne(workerId);
-            return Optional.of(new Worker(one.getId()));
-        } catch (EntityNotFoundException e) {
+        if (repository.exists(workerId)) {
+            return Optional.of(instances.computeIfAbsent(workerId, Worker::new));
+        } else {
             return Optional.empty();
         }
     }
