@@ -1,5 +1,9 @@
 package com.github.salvatorenovelli.seo.websiteversioning.crawler;
 
+
+import net.jcip.annotations.ThreadSafe;
+
+@ThreadSafe
 public class Worker {
     private final String id;
 
