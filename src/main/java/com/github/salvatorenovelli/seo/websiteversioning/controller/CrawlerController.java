@@ -1,14 +1,17 @@
 package com.github.salvatorenovelli.seo.websiteversioning.controller;
 
 
+import com.github.salvatorenovelli.seo.websiteversioning.crawler.WorkerDTO;
 import com.github.salvatorenovelli.seo.websiteversioning.crawler.WorkerManager;
 import com.github.salvatorenovelli.seo.websiteversioning.model.CrawlStartResponse;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/crawler")
+@RequestMapping("/worker")
 public class CrawlerController {
 
 
@@ -20,10 +23,13 @@ public class CrawlerController {
         this.secretKey = secretKey;
     }
 
-    @GetMapping("/create")
-    public String createCrawler() {
-        System.out.printf("" + secretKey);
-        return null;
+    @PutMapping("{providedKey}/create")
+    public ResponseEntity<WorkerDTO> createWorker(@PathVariable String providedKey) {
+        if (providedKey.equals(secretKey)) {
+            return ResponseEntity.ok(new WorkerDTO(workerManager.createWorker().getId()));
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @PutMapping("{crawlerId}/start")

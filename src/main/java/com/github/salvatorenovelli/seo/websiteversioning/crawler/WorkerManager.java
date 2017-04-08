@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 
@@ -20,6 +21,11 @@ public class WorkerManager {
         this.repository = repository;
     }
 
+    @Transactional
+    public Worker createWorker() {
+        WorkerDTO save = repository.save(new WorkerDTO(UUID.randomUUID().toString()));
+        return getWorker(save.getId()).get();
+    }
 
     @Transactional
     public Optional<Worker> getWorker(String workerId) {
