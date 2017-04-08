@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/crawler")
 public class CrawlerController {
-
     @PutMapping("{crawlerId}/start")
     public CrawlStartResponse startCrawling(@PathVariable String crawlerId, @RequestParam String url) {
         return new CrawlStartResponse(true, "Starting " + crawlerId + " " + url);
