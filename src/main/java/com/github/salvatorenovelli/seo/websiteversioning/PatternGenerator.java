@@ -9,10 +9,7 @@ public class PatternGenerator {
     private final static String regexEnd = ".*(?<!css|js|gif|jpg|png|mp3|mp3|zip|gz)$";
 
     public static Pattern generatePatternFor(String domain) {
-        String regex = regexBase +
-                domain
-                        .replaceAll("(www\\.)|(http://)|(https://)", "") +
-                regexEnd;
+        String regex = regexBase + domain.replaceAll("(www\\.)|(http://)|(https://)", "") + regexEnd;
         return Pattern.compile(regex);
     }
 }

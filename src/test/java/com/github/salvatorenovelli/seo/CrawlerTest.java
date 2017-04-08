@@ -10,10 +10,5 @@ public class CrawlerTest {
     @Test
     public void name() throws Exception {
 
-
-        Crawler crawler = new Crawler();
-
-
-        crawler.crawl(URI.create("http://www.example.com"), uri -> System.out.println("Consuming: " + uri.toString()));
     }
 }
