@@ -1,5 +1,6 @@
 package com.github.salvatorenovelli.seo.websiteversioning;
 
+import com.github.salvatorenovelli.seo.websiteversioning.config.Constants;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
@@ -8,16 +9,19 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.util.UUID;
+
 public class CrawlerTest {
 
 
-    @Test@Ignore
+    @Test
+    @Ignore
     public void shouldNotVisitOutsideMainDomain() throws Exception {
 
         int numberOfCrawlers = 7;
 
         CrawlConfig config = new CrawlConfig();
-        config.setCrawlStorageFolder(Config.DATA_STORE_DIR.getAbsolutePath());
+        config.setCrawlStorageFolder(Constants.DATA_STORE_DIR.getAbsolutePath());
 
         /*
          * Instantiate the controller for this crawl.
@@ -55,7 +59,7 @@ public class CrawlerTest {
 
         @Override
         public Crawler newInstance() {
-            return new Crawler(baseUrl);
+            return new Crawler(baseUrl, UUID.randomUUID().toString());
         }
     }
 

@@ -8,12 +8,12 @@ import java.util.regex.Pattern;
 
 public class Crawler extends WebCrawler {
 
-
     private final Pattern patter;
+    private final String id;
 
-
-    public Crawler(String baseDomain) {
+    public Crawler(String baseDomain, String id) {
         patter = PatternGenerator.generatePatternFor(baseDomain);
+        this.id = id;
     }
 
     @Override
@@ -37,4 +37,9 @@ public class Crawler extends WebCrawler {
 //            System.out.println("Number of outgoing links: " + links.size());
 //        }
     }
+
+    public String getId() {
+        return id;
+    }
+
 }
