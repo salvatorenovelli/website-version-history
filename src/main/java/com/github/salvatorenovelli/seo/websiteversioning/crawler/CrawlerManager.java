@@ -3,7 +3,9 @@ package com.github.salvatorenovelli.seo.websiteversioning.crawler;
 import com.github.salvatorenovelli.seo.websiteversioning.Crawler;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 
 @Component
@@ -18,11 +20,12 @@ public class CrawlerManager {
 
 
     @Transactional
-    public Crawler getCrawler(String baseDomain, String crawlerId) {
-
-        CrawlerDTO one = repository.getOne(crawlerId);
-
-
-        return new Crawler(baseDomain, crawlerId);
+    public Optional<Crawler> getCrawler(String baseDomain, String crawlerId) {
+        try {
+            CrawlerDTO one = repository.getOne(crawlerId);
+            return Optional.of(new Crawler(baseDomain, one.getId()));
+        } catch (EntityNotFoundException e) {
+            return Optional.empty();
+        }
     }
 }
