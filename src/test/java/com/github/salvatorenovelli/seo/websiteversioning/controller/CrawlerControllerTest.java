@@ -22,7 +22,7 @@ public class CrawlerControllerTest {
     @Before
     public void setup() {
         mvc = MockMvcBuilders
-                .standaloneSetup(new CrawlerController(workerManager))
+                .standaloneSetup(new CrawlerController(workerManager, "465783snsdujnis"))
                 .build();
     }
 
