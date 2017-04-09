@@ -5,13 +5,12 @@ import com.github.salvatorenovelli.seo.websiteversioning.crawler.WorkerDTO;
 import com.github.salvatorenovelli.seo.websiteversioning.crawler.WorkerManager;
 import com.github.salvatorenovelli.seo.websiteversioning.model.CrawlStartResponse;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
-@RestController
-@RequestMapping("/worker")
+@RestController()
+@RequestMapping("/api")
 public class CrawlerController {
 
 
@@ -23,17 +22,18 @@ public class CrawlerController {
         this.secretKey = secretKey;
     }
 
-    @PutMapping("{providedKey}/create")
-    public ResponseEntity<WorkerDTO> createWorker(@PathVariable String providedKey) {
-        if (providedKey.equals(secretKey)) {
-            return ResponseEntity.ok(new WorkerDTO(workerManager.createWorker().getId()));
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+    @GetMapping("/test")
+    public String test() {
+        return "yea";
     }
 
-    @PutMapping("{crawlerId}/start")
-    public CrawlStartResponse startCrawling(@PathVariable String crawlerId, @RequestParam String url) {
-        return new CrawlStartResponse(true, "Starting " + crawlerId + " " + url);
+    @PutMapping("/create")
+    public ResponseEntity<WorkerDTO> createWorker() {
+        return ResponseEntity.ok(new WorkerDTO(workerManager.createWorker().getId()));
+    }
+
+    @PutMapping("{workerId}/start")
+    public CrawlStartResponse startCrawling(@PathVariable String workerId, @RequestParam String url) {
+        return new CrawlStartResponse(true, "Starting worker " + workerId + " " + url);
     }
 }
