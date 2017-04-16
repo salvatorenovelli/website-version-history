@@ -22,12 +22,12 @@ public class WorkerController {
     }
 
     @GetMapping("/list")
-    public List<WorkerDTO> listAvailable() {
-        return workerManager.getUserWorkers().stream().map(WorkerDTO::new).collect(Collectors.toList());
+    public List<WorkerDTO> listAvailable(Principal principal) {
+        return workerManager.getWorkersFor(principal).stream().map(WorkerDTO::new).collect(Collectors.toList());
     }
 
     @PutMapping("{workerId}/start")
-    public CrawlStartResponse startWorker(Principal principal, @PathVariable String workerId, @RequestParam String url) {
+    public CrawlStartResponse startWorker(@PathVariable String workerId, @RequestParam String url) {
         return new CrawlStartResponse(true, "Starting worker " + workerId + " " + url);
     }
 
