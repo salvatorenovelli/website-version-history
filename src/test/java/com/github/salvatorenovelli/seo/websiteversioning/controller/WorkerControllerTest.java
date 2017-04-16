@@ -18,9 +18,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @RunWith(SpringRunner.class)
-public class CrawlerControllerTest {
+public class WorkerControllerTest {
 
-    public static final String VALID_KEY = "465783snsdujnis";
     private static final String WORKER_ID = "ABCD";
     private MockMvc mvc;
     @Mock private WorkerManager workerManager;
@@ -30,13 +29,13 @@ public class CrawlerControllerTest {
     public void setup() {
         when(workerManager.createWorker()).thenReturn(worker);
         mvc = MockMvcBuilders
-                .standaloneSetup(new CrawlerController(workerManager, VALID_KEY))
+                .standaloneSetup(new WorkerController(workerManager))
                 .build();
     }
 
     @Test
     public void shouldAllowCreationWithRightSecretKey() throws Exception {
-        mvc.perform(put("/worker/" + VALID_KEY + "/create"))
+        mvc.perform(put("api/worker/create"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(WORKER_ID)));
     }

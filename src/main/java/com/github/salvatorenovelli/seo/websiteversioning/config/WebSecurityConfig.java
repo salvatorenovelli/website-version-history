@@ -43,7 +43,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                                 @Value("${default.user}") String defaultUser,
                                 @Value("${default.password}") String defaultPassword) throws Exception {
         auth
-                .inMemoryAuthentication()
-                .withUser(defaultUser).password(defaultPassword).roles("USER");
+            .inMemoryAuthentication()
+            .withUser(defaultUser).password(defaultPassword).roles("USER");
     }
 }
