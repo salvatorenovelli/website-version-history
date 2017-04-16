@@ -14,4 +14,8 @@ import javax.persistence.Id;
 public class WorkerDTO {
     @Id
     private String id;
+
+    public WorkerDTO(Worker worker) {
+        this.id = worker.getId();
+    }
 }

@@ -4,18 +4,16 @@ package com.github.salvatorenovelli.seo.websiteversioning.controller;
 import com.github.salvatorenovelli.seo.websiteversioning.crawler.WorkerDTO;
 import com.github.salvatorenovelli.seo.websiteversioning.crawler.WorkerManager;
 import com.github.salvatorenovelli.seo.websiteversioning.model.CrawlStartResponse;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @RestController
 @RequestMapping("/api/worker")
 public class WorkerController {
-
 
     private final WorkerManager workerManager;
 
@@ -24,14 +22,8 @@ public class WorkerController {
     }
 
     @GetMapping("/list")
-    public List<WorkerDTO> listAvailable(Principal principal) {
-        System.out.println("principal = " + principal);
-        return Collections.emptyList();
-    }
-
-    @PutMapping("/create")
-    public ResponseEntity<WorkerDTO> createWorker() {
-        return ResponseEntity.ok(new WorkerDTO(workerManager.createWorker().getId()));
+    public List<WorkerDTO> listAvailable() {
+        return workerManager.getUserWorkers().stream().map(WorkerDTO::new).collect(Collectors.toList());
     }
 
     @PutMapping("{workerId}/start")

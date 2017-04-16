@@ -1,53 +1,37 @@
 package com.github.salvatorenovelli.seo.websiteversioning.crawler;
 
-import org.junit.Before;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Optional;
+import java.util.List;
 
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.*;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 
-@DataJpaTest
 @RunWith(SpringRunner.class)
 public class WorkerManagerTest {
 
-
-    private static final String CRAWLER_ID = "ABCD";
     @Autowired
-    private WorkerRepository repository;
-    private WorkerManager workerManager;
+    WorkerManager workerManager;
 
-    @Before
-    public void setUp() throws Exception {
-        repository.save(new WorkerDTO(CRAWLER_ID));
-        workerManager = new WorkerManager(repository);
-    }
+
+
 
     @Test
-    public void shouldReturnTheCrawlerIfItExist() throws Exception {
-        Optional<Worker> crawler = workerManager.getWorker(CRAWLER_ID);
-        assertTrue(crawler.isPresent());
-        assertThat(crawler.get().getId(), is(CRAWLER_ID));
-    }
+    @WithMockUser(username = "salvatore", authorities = {"USER"})
+    public void shouldGetCurrentUserWorkers() throws Exception {
 
-    @Test
-    public void shouldReturnNoneIfTheCrawlerDoesNotExist() throws Exception {
-        Optional<Worker> crawler = workerManager.getWorker("ZZZZZZZ");
-        assertFalse(crawler.isPresent());
-    }
 
-    @Test
-    public void onceCreatedItShouldAlwaysRetrieveTheSameInstance() throws Exception {
-        Optional<Worker> worker1 = workerManager.getWorker(CRAWLER_ID);
-        Optional<Worker> worker2 = workerManager.getWorker(CRAWLER_ID);
 
-        assertEquals(worker1, worker2);
+        WorkerManager workerManager = new WorkerManager();
+        List<Worker> userWorker = workerManager.getUserWorker();
+
+        assertThat(userWorker, Matchers.hasItems(new Worker("sdf")));
 
     }
 }
