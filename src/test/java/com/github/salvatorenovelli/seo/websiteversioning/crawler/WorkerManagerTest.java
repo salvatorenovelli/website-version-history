@@ -20,12 +20,10 @@ public class WorkerManagerTest {
     }
 
     @Test
-    @WithMockUser(username = "salvatore", authorities = {"USER"})
     public void shouldGetCurrentUserWorkers() throws Exception {
 
 
 
-        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     @Test

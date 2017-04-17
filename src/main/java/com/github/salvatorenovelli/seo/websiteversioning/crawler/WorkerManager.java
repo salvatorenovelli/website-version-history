@@ -14,4 +14,8 @@ public class WorkerManager {
         System.out.println(principal.getName());
         return Collections.emptyList();
     }
+
+    public Worker createWorkerForUser(String user) {
+        throw new UnsupportedOperationException("Not implemented yet!");
+    }
 }

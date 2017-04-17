@@ -7,7 +7,9 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+
+import static com.github.salvatorenovelli.seo.websiteversioning.security.AuthoritiesConstants.ADMIN;
+import static com.github.salvatorenovelli.seo.websiteversioning.security.AuthoritiesConstants.USER;
 
 @Configuration
 @EnableWebSecurity
@@ -19,6 +21,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
             .antMatchers("/", "/home").permitAll()
+            .antMatchers("/admin/**").hasAuthority(ADMIN)
             .anyRequest().authenticated()
         .and()
             .formLogin()
@@ -41,9 +44,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth,
                                 @Value("${default.user}") String defaultUser,
-                                @Value("${default.password}") String defaultPassword) throws Exception {
+                                @Value("${default.password}") String defaultPassword,
+                                @Value("${admin.user}") String adminUser,
+                                @Value("${admin.password}") String adminPassword
+    ) throws Exception {
         auth
             .inMemoryAuthentication()
-            .withUser(defaultUser).password(defaultPassword).roles("USER");
+            .withUser(defaultUser).password(defaultPassword).roles("USER")
+        .and()
+            .withUser(adminUser).password(adminPassword).roles("USER", "ADMIN");
     }
 }
