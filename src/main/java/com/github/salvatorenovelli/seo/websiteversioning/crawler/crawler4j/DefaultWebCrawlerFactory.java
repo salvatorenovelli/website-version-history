@@ -22,5 +22,4 @@ class DefaultWebCrawlerFactory implements CrawlController.WebCrawlerFactory<Defa
         return new DefaultWebCrawler(baseUrl, UUID.randomUUID().toString());
     }
 
-
 }
