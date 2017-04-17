@@ -51,14 +51,14 @@ public class WorkerManagerControllerTest {
     @Test
     @WithMockUser(username = "salvatore")
     public void shouldAllowOnlyAdmin() throws Exception {
-        mvc.perform(post("/admin/api/create-worker").param("user", "piero"))
+        mvc.perform(post("/admin/api/create-worker").param("user", USER_NAME))
                 .andExpect(status().isForbidden());
     }
 
     @Test
     @WithMockUser(username = "salvatore", roles = {"ADMIN"})
     public void shouldAllowAdmin() throws Exception {
-        mvc.perform(post("/admin/api/create-worker").param("user", "piero"))
+        mvc.perform(post("/admin/api/create-worker").param("user", USER_NAME))
                 .andExpect(status().isOk());
     }
 
