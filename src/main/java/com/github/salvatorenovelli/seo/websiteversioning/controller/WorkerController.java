@@ -37,11 +37,6 @@ public class WorkerController {
         findWorker(principal, workerId).startCrawling(url);
     }
 
-    @PutMapping("{workerId}/stop")
-    public void stopWorker(@PathVariable String workerId, @RequestParam String url) {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
     private Worker findWorker(Principal principal, @PathVariable String workerId) {
         return workerManager.getWorkersFor(principal).stream().filter(worker -> worker.getId().equals(workerId))
                 .findFirst().orElseThrow(ResourceNotFoundException::new);
