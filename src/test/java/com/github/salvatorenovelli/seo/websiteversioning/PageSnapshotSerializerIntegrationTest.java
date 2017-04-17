@@ -1,6 +1,7 @@
 package com.github.salvatorenovelli.seo.websiteversioning;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.salvatorenovelli.seo.websiteversioning.domain.PageSnapshotSerializer;
 import com.github.salvatorenovelli.seo.websiteversioning.model.PageSnapshot;
 import com.jayway.jsonpath.DocumentContext;
 import com.jayway.jsonpath.JsonPath;

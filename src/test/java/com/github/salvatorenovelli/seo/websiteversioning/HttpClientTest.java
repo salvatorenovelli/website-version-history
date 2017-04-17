@@ -1,5 +1,6 @@
 package com.github.salvatorenovelli.seo.websiteversioning;
 
+import com.github.salvatorenovelli.seo.websiteversioning.domain.HttpClient;
 import org.jsoup.nodes.Document;
 import org.junit.After;
 import org.junit.Test;

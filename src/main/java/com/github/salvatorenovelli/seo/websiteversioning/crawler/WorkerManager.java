@@ -1,6 +1,6 @@
 package com.github.salvatorenovelli.seo.websiteversioning.crawler;
 
-import com.github.salvatorenovelli.seo.websiteversioning.WorkerFactory;
+import com.github.salvatorenovelli.seo.websiteversioning.domain.WorkerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;

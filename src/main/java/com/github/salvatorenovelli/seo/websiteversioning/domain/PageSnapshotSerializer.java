@@ -1,4 +1,4 @@
-package com.github.salvatorenovelli.seo.websiteversioning;
+package com.github.salvatorenovelli.seo.websiteversioning.domain;
 
 import com.fasterxml.jackson.databind.ObjectWriter;
 import com.github.salvatorenovelli.seo.websiteversioning.model.PageSnapshot;

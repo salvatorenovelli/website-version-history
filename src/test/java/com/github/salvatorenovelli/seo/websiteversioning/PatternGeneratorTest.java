@@ -1,5 +1,6 @@
 package com.github.salvatorenovelli.seo.websiteversioning;
 
+import com.github.salvatorenovelli.seo.websiteversioning.domain.PatternGenerator;
 import org.junit.Test;
 
 import java.util.Arrays;

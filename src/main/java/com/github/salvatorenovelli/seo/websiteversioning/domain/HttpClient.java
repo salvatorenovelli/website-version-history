@@ -1,4 +1,4 @@
-package com.github.salvatorenovelli.seo.websiteversioning;
+package com.github.salvatorenovelli.seo.websiteversioning.domain;
 
 
 import org.jsoup.Connection;

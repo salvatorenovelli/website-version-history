@@ -1,5 +1,7 @@
 package com.github.salvatorenovelli.seo.websiteversioning;
 
+import com.github.salvatorenovelli.seo.websiteversioning.domain.PageSnapshotSerializer;
+import com.github.salvatorenovelli.seo.websiteversioning.domain.PageStore;
 import com.github.salvatorenovelli.seo.websiteversioning.model.PageSnapshot;
 import org.junit.Before;
 import org.junit.Rule;

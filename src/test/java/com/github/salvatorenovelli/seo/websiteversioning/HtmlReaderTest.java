@@ -1,6 +1,7 @@
 package com.github.salvatorenovelli.seo.websiteversioning;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.salvatorenovelli.seo.websiteversioning.domain.HtmlReader;
+import com.github.salvatorenovelli.seo.websiteversioning.domain.HttpClient;
 import com.github.salvatorenovelli.seo.websiteversioning.model.PageSnapshot;
 import org.junit.After;
 import org.junit.Before;
@@ -8,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.nio.file.Paths;
 import java.util.List;
 
 import static com.github.salvatorenovelli.seo.websiteversioning.TestWebsiteBuilder.*;

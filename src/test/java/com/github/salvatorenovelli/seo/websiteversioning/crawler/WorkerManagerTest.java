@@ -1,7 +1,7 @@
 package com.github.salvatorenovelli.seo.websiteversioning.crawler;
 
-import com.github.salvatorenovelli.seo.websiteversioning.DefaultWorkerFactory;
-import com.github.salvatorenovelli.seo.websiteversioning.WorkerFactory;
+import com.github.salvatorenovelli.seo.websiteversioning.domain.DefaultWorkerFactory;
+import com.github.salvatorenovelli.seo.websiteversioning.domain.WorkerFactory;
 import org.hamcrest.Matchers;
 import org.junit.Ignore;
 import org.junit.Test;

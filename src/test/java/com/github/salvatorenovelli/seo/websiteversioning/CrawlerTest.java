@@ -1,6 +1,7 @@
 package com.github.salvatorenovelli.seo.websiteversioning;
 
 import com.github.salvatorenovelli.seo.websiteversioning.config.Constants;
+import com.github.salvatorenovelli.seo.websiteversioning.domain.PatternGenerator;
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.crawler.Page;
