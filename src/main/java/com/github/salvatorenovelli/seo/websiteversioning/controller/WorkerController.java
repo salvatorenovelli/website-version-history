@@ -23,8 +23,16 @@ public class WorkerController {
     }
 
     @GetMapping("/list")
-    public List<WorkerDTO> listAvailable(Principal principal) {
-        return workerManager.getWorkersFor(principal).stream().map(WorkerDTO::new).collect(Collectors.toList());
+    public List<String> listAvailable(Principal principal) {
+        return workerManager.getWorkersFor(principal).stream().map(Worker::getId).collect(Collectors.toList());
+    }
+
+    @GetMapping("{workerId}/status")
+    public WorkerDTO getWorkerStatus(Principal principal, @PathVariable String workerId) {
+        return workerManager.getWorkersFor(principal).stream().filter(worker -> worker.getId().equals(workerId))
+                .findFirst()
+                .map(WorkerDTO::new)
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     @PutMapping("{workerId}/start")
@@ -34,12 +42,11 @@ public class WorkerController {
                 .findFirst()
                 .orElseThrow(ResourceNotFoundException::new)
                 .startCrawling(url);
-
     }
 
     @PutMapping("{workerId}/stop")
     public void stopWorker(@PathVariable String workerId, @RequestParam String url) {
-        //return new CrawlStartResponse(true, "Starting worker " + workerId + " " + url);
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)

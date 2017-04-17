@@ -10,9 +10,7 @@ import java.util.List;
 
 @Component
 public class WorkerManager {
-
     public List<Worker> getWorkersFor(@NotNull Principal principal) {
-
         System.out.println(principal.getName());
         return Collections.emptyList();
     }

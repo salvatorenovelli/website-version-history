@@ -50,8 +50,8 @@ public class WorkerControllerTest {
         mvc.perform(get("/api/worker/list").principal(currentPrincipal))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].id", is(WORKER_ID1)))
-                .andExpect(jsonPath("$[1].id", is(WORKER_ID2)));
+                .andExpect(jsonPath("$[0]", is(WORKER_ID1)))
+                .andExpect(jsonPath("$[1]", is(WORKER_ID2)));
     }
 
     @Test
@@ -74,8 +74,8 @@ public class WorkerControllerTest {
     }
 
     @Test
-    public void shouldAllowStartingOfWorker() throws Exception {
-        mvc.perform(put("api/worker/create"))
+    public void shouldGetWorkerStatus() throws Exception {
+        mvc.perform(get("/api/worker/" + WORKER_ID1 + "/status").principal(currentPrincipal))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(WORKER_ID1)));
     }
