@@ -1,9 +1,14 @@
 package com.github.salvatorenovelli.seo.websiteversioning.crawler;
 
+import com.github.salvatorenovelli.seo.websiteversioning.domain.CrawlerFactory;
 import com.github.salvatorenovelli.seo.websiteversioning.domain.DefaultWorkerFactory;
 import com.github.salvatorenovelli.seo.websiteversioning.domain.WorkerFactory;
 import org.hamcrest.Matchers;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.List;
 
@@ -11,12 +16,19 @@ import static org.hamcrest.Matchers.hasItems;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
-
+@RunWith(MockitoJUnitRunner.class)
 public class WorkerManagerTest {
 
 
-    private WorkerFactory workerFactory = new DefaultWorkerFactory();
-    private WorkerManager workerManager = new WorkerManager(workerFactory);
+    @Mock private CrawlerFactory crawlerFactory;
+    private WorkerFactory workerFactory;
+    private WorkerManager workerManager;
+
+    @Before
+    public void setUp() throws Exception {
+        workerFactory = new DefaultWorkerFactory(crawlerFactory);
+        workerManager = new WorkerManager(workerFactory);
+    }
 
     @Test
     public void shouldCreateWorker() throws Exception {

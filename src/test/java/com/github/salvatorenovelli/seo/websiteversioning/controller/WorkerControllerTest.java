@@ -1,5 +1,6 @@
 package com.github.salvatorenovelli.seo.websiteversioning.controller;
 
+import com.github.salvatorenovelli.seo.websiteversioning.crawler.Crawler;
 import com.github.salvatorenovelli.seo.websiteversioning.crawler.Worker;
 import com.github.salvatorenovelli.seo.websiteversioning.crawler.WorkerManager;
 import org.junit.Before;
@@ -29,7 +30,8 @@ public class WorkerControllerTest {
 
     public static final String TEST_URL = "http://example.com";
     private MockMvc mvc;
-    private WorkerManager workerManager = new WorkerManager(() -> Mockito.spy(new Worker(UUID.randomUUID().toString())));
+    @Mock private Crawler crawler;
+    private WorkerManager workerManager = new WorkerManager(() -> Mockito.spy(new Worker(UUID.randomUUID().toString(), crawler)));
     @Mock private Principal currentPrincipal;
     private Worker worker1;
     private Worker worker2;

@@ -8,10 +8,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 @Component
 public class DefaultWorkerFactory implements WorkerFactory {
 
-    private AtomicInteger id = new AtomicInteger(0);
+    private final CrawlerFactory crawlerFactory;
+    private final AtomicInteger id = new AtomicInteger(0);
+
+    public DefaultWorkerFactory(CrawlerFactory crawlerFactory) {
+        this.crawlerFactory = crawlerFactory;
+    }
 
     @Override
     public Worker createWorker() {
-        return new Worker(String.valueOf(id.getAndIncrement()));
+        return new Worker(String.valueOf(id.getAndIncrement()), crawlerFactory.createCrawler());
     }
 }

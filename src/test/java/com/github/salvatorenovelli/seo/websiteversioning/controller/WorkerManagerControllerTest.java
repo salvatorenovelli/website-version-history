@@ -1,6 +1,7 @@
 package com.github.salvatorenovelli.seo.websiteversioning.controller;
 
 import com.github.salvatorenovelli.seo.websiteversioning.config.WebSecurityConfig;
+import com.github.salvatorenovelli.seo.websiteversioning.crawler.Crawler;
 import com.github.salvatorenovelli.seo.websiteversioning.crawler.Worker;
 import com.github.salvatorenovelli.seo.websiteversioning.crawler.WorkerManager;
 import org.junit.Before;
@@ -34,11 +35,12 @@ public class WorkerManagerControllerTest {
     FilterChainProxy springSecurityFilterChain;
     private MockMvc mvc;
     @Mock private WorkerManager workerManager;
+    @Mock private Crawler crawler;
 
     @Before
     public void setup() {
 
-        when(workerManager.createWorkerForUser(USER_NAME)).thenReturn(new Worker("TEST_ID"));
+        when(workerManager.createWorkerForUser(USER_NAME)).thenReturn(new Worker("TEST_ID", crawler));
 
         mvc = MockMvcBuilders
                 .standaloneSetup(new WorkerManagerController(workerManager))

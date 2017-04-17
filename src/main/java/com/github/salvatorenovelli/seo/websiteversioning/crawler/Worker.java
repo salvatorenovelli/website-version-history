@@ -5,10 +5,14 @@ import net.jcip.annotations.ThreadSafe;
 
 @ThreadSafe
 public class Worker {
-    private final String id;
 
-    public Worker(String id) {
+
+    private final String id;
+    private final Crawler crawler;
+
+    public Worker(String id, Crawler crawler) {
         this.id = id;
+        this.crawler = crawler;
     }
 
     public String getId() {
@@ -16,6 +20,6 @@ public class Worker {
     }
 
     public void startCrawling(String url) {
-
+        crawler.startCrawling(url);
     }
 }
