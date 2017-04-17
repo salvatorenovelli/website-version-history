@@ -3,7 +3,6 @@ package com.github.salvatorenovelli.seo.websiteversioning.crawler;
 import com.github.salvatorenovelli.seo.websiteversioning.domain.DefaultWorkerFactory;
 import com.github.salvatorenovelli.seo.websiteversioning.domain.WorkerFactory;
 import org.hamcrest.Matchers;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -50,13 +49,4 @@ public class WorkerManagerTest {
         assertThat(workers2, hasItems(workerForuser2));
     }
 
-    @Test@Ignore
-    public void shouldGetCurrentUserWorkers() throws Exception {
-        throw new UnsupportedOperationException("Not implemented yet!");
-    }
-
-    @Test
-    public void shouldNotAllowNull() throws Exception {
-        //workerManager.getWorkersFor(null);
-    }
 }
