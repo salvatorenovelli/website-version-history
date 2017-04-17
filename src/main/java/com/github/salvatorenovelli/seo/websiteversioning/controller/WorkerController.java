@@ -27,7 +27,7 @@ public class WorkerController {
         return workerManager.getWorkersFor(principal).stream().map(Worker::getId).collect(Collectors.toList());
     }
 
-    @GetMapping("{workerId}/status")
+    @GetMapping("{workerId}")
     public WorkerDTO getWorkerStatus(Principal principal, @PathVariable String workerId) {
         return new WorkerDTO(findWorker(principal, workerId));
     }

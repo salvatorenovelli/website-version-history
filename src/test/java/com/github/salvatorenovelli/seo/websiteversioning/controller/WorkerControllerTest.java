@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -77,7 +76,7 @@ public class WorkerControllerTest {
 
     @Test
     public void shouldGetWorkerStatus() throws Exception {
-        mvc.perform(get("/api/worker/" + worker1.getId() + "/status").principal(currentPrincipal))
+        mvc.perform(get("/api/worker/" + worker1.getId()).principal(currentPrincipal))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(worker1.getId())));
     }
@@ -85,7 +84,7 @@ public class WorkerControllerTest {
 
     @Test
     public void shouldReturn404IfWorkerIsNotPresent() throws Exception {
-        mvc.perform(get("/api/worker/" + "WRONG_ID" + "/status").principal(currentPrincipal))
+        mvc.perform(get("/api/worker/" + "WRONG_ID").principal(currentPrincipal))
                 .andExpect(status().isNotFound());
     }
 }
