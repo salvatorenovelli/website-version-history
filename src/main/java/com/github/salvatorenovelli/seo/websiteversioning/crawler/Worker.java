@@ -14,4 +14,8 @@ public class Worker {
     public String getId() {
         return id;
     }
+
+    public void startCrawling(String url) {
+
+    }
 }

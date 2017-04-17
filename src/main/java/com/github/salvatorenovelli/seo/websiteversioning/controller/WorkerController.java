@@ -1,9 +1,10 @@
 package com.github.salvatorenovelli.seo.websiteversioning.controller;
 
 
+import com.github.salvatorenovelli.seo.websiteversioning.crawler.Worker;
 import com.github.salvatorenovelli.seo.websiteversioning.crawler.WorkerDTO;
 import com.github.salvatorenovelli.seo.websiteversioning.crawler.WorkerManager;
-import com.github.salvatorenovelli.seo.websiteversioning.model.CrawlStartResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -27,12 +28,21 @@ public class WorkerController {
     }
 
     @PutMapping("{workerId}/start")
-    public CrawlStartResponse startWorker(@PathVariable String workerId, @RequestParam String url) {
-        return new CrawlStartResponse(true, "Starting worker " + workerId + " " + url);
+    public void startWorker(Principal principal, @PathVariable String workerId, @RequestParam String url) {
+        List<Worker> workersFor = workerManager.getWorkersFor(principal);
+        workersFor.stream().filter(worker -> worker.getId().equals(workerId))
+                .findFirst()
+                .orElseThrow(ResourceNotFoundException::new)
+                .startCrawling(url);
+
     }
 
     @PutMapping("{workerId}/stop")
-    public CrawlStartResponse stopWorker(@PathVariable String workerId, @RequestParam String url) {
-        return new CrawlStartResponse(true, "Starting worker " + workerId + " " + url);
+    public void stopWorker(@PathVariable String workerId, @RequestParam String url) {
+        //return new CrawlStartResponse(true, "Starting worker " + workerId + " " + url);
+    }
+
+    @ResponseStatus(value = HttpStatus.NOT_FOUND)
+    private class ResourceNotFoundException extends RuntimeException {
     }
 }
