@@ -46,7 +46,7 @@ public class WorkerManagerControllerTest {
 
 
     @Test
-    @WithMockUser(username = "salvatore", roles = {"USER"})
+    @WithMockUser(username = "salvatore")
     public void shouldAllowOnlyAdmin() throws Exception {
         mvc.perform(post("/admin/api/create-worker").param("user", "piero"))
                 .andExpect(status().isForbidden());
