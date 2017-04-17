@@ -1,6 +1,6 @@
 package com.github.salvatorenovelli.seo.websiteversioning.crawler;
 
-import com.github.salvatorenovelli.seo.websiteversioning.domain.CrawlerFactory;
+import com.github.salvatorenovelli.seo.websiteversioning.crawler.crawler4j.Crawler4JCrawlerFactory;
 import com.github.salvatorenovelli.seo.websiteversioning.domain.DefaultWorkerFactory;
 import com.github.salvatorenovelli.seo.websiteversioning.domain.WorkerFactory;
 import org.hamcrest.Matchers;
@@ -20,7 +20,7 @@ import static org.junit.Assert.assertThat;
 public class WorkerManagerTest {
 
 
-    @Mock private CrawlerFactory crawlerFactory;
+    @Mock private Crawler4JCrawlerFactory crawlerFactory;
     private WorkerFactory workerFactory;
     private WorkerManager workerManager;
 

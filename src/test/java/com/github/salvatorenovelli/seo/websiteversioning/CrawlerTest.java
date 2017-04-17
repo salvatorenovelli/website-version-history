@@ -41,14 +41,14 @@ public class CrawlerTest {
          * URLs that are fetched and then the crawler starts following links
          * which are found in these pages
          */
-        controller.addSeed("http://www.fedesarda.it");
+        controller.addSeed("http://www.example.it");
 
 
         /*
          * Start the crawl. This is a blocking operation, meaning that your code
          * will reach the line after this only when crawling is finished.
          */
-        controller.start(new MyCrawlerFactory("http://www.fedesarda.it"), numberOfCrawlers);
+        controller.start(new MyCrawlerFactory("http://www.example.it"), numberOfCrawlers);
 
     }
 
