@@ -29,19 +29,12 @@ public class WorkerController {
 
     @GetMapping("{workerId}/status")
     public WorkerDTO getWorkerStatus(Principal principal, @PathVariable String workerId) {
-        return workerManager.getWorkersFor(principal).stream().filter(worker -> worker.getId().equals(workerId))
-                .findFirst()
-                .map(WorkerDTO::new)
-                .orElseThrow(ResourceNotFoundException::new);
+        return new WorkerDTO(findWorker(principal, workerId));
     }
 
     @PutMapping("{workerId}/start")
     public void startWorker(Principal principal, @PathVariable String workerId, @RequestParam String url) {
-        List<Worker> workersFor = workerManager.getWorkersFor(principal);
-        workersFor.stream().filter(worker -> worker.getId().equals(workerId))
-                .findFirst()
-                .orElseThrow(ResourceNotFoundException::new)
-                .startCrawling(url);
+        findWorker(principal, workerId).startCrawling(url);
     }
 
     @PutMapping("{workerId}/stop")
@@ -49,7 +42,13 @@ public class WorkerController {
         throw new UnsupportedOperationException("Not implemented yet!");
     }
 
+    private Worker findWorker(Principal principal, @PathVariable String workerId) {
+        return workerManager.getWorkersFor(principal).stream().filter(worker -> worker.getId().equals(workerId))
+                .findFirst().orElseThrow(ResourceNotFoundException::new);
+    }
+
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     private class ResourceNotFoundException extends RuntimeException {
+
     }
 }

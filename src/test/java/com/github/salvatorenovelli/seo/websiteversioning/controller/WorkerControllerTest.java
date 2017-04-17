@@ -79,4 +79,11 @@ public class WorkerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(WORKER_ID1)));
     }
+
+
+    @Test
+    public void shouldReturn404IfWorkerIsNotPresent() throws Exception {
+        mvc.perform(get("/api/worker/" + "WRONG_ID" + "/status").principal(currentPrincipal))
+                .andExpect(status().isNotFound());
+    }
 }
