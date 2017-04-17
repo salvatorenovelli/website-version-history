@@ -29,14 +29,17 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebAppConfiguration
 public class WorkerManagerControllerTest {
 
+    public static final String USER_NAME = "piero";
     @Autowired
     FilterChainProxy springSecurityFilterChain;
-
     private MockMvc mvc;
     @Mock private WorkerManager workerManager;
 
     @Before
     public void setup() {
+
+        when(workerManager.createWorkerForUser(USER_NAME)).thenReturn(new Worker("TEST_ID"));
+
         mvc = MockMvcBuilders
                 .standaloneSetup(new WorkerManagerController(workerManager))
                 // .alwaysDo(MockMvcResultHandlers.print())
@@ -62,9 +65,7 @@ public class WorkerManagerControllerTest {
     @Test
     @WithMockUser(username = "salvatore", roles = {"ADMIN"})
     public void shouldCreateWorker() throws Exception {
-        String userName = "piero";
-        when(workerManager.createWorkerForUser(userName)).thenReturn(new Worker("TEST_ID"));
-        mvc.perform(post("/admin/api/create-worker").param("user", userName))
+        mvc.perform(post("/admin/api/create-worker").param("user", USER_NAME))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is("TEST_ID")))
                 .andDo(MockMvcResultHandlers.print());
