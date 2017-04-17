@@ -6,13 +6,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Spy;
+import org.mockito.Mockito;
+import org.mockito.runners.MockitoJUnitRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.security.Principal;
-import java.util.Arrays;
+import java.util.UUID;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -24,21 +25,22 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-@RunWith(SpringRunner.class)
+@RunWith(MockitoJUnitRunner.class)
 public class WorkerControllerTest {
 
     public static final String TEST_URL = "http://example.com";
-    private static final String WORKER_ID1 = "ABCD1";
-    private static final String WORKER_ID2 = "ABCD2";
     private MockMvc mvc;
-    @Mock private WorkerManager workerManager;
+    private WorkerManager workerManager = new WorkerManager(() -> Mockito.spy(new Worker(UUID.randomUUID().toString())));
     @Mock private Principal currentPrincipal;
-    @Spy private Worker worker1 = new Worker(WORKER_ID1);
-    @Spy private Worker worker2 = new Worker(WORKER_ID2);
+    private Worker worker1;
+    private Worker worker2;
 
     @Before
     public void setup() {
-        when(workerManager.getWorkersFor(currentPrincipal)).thenReturn(Arrays.asList(worker1, worker2));
+        when(currentPrincipal.getName()).thenReturn("testUser");
+        worker1 = workerManager.createWorkerForUser("testUser");
+        worker2 = workerManager.createWorkerForUser("testUser");
+
         mvc = MockMvcBuilders
                 .standaloneSetup(new WorkerController(workerManager))
                 .build();
@@ -50,14 +52,14 @@ public class WorkerControllerTest {
         mvc.perform(get("/api/worker/list").principal(currentPrincipal))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0]", is(WORKER_ID1)))
-                .andExpect(jsonPath("$[1]", is(WORKER_ID2)));
+                .andExpect(jsonPath("$[0]", is(worker1.getId())))
+                .andExpect(jsonPath("$[1]", is(worker2.getId())));
     }
 
     @Test
     public void shouldAllowStartingOfValidWorker() throws Exception {
         mvc.perform(
-                put("/api/worker/" + WORKER_ID1 + "/start")
+                put("/api/worker/" + worker1.getId() + "/start")
                         .principal(currentPrincipal)
                         .param("url", TEST_URL))
                 .andExpect(status().isOk());
@@ -75,9 +77,9 @@ public class WorkerControllerTest {
 
     @Test
     public void shouldGetWorkerStatus() throws Exception {
-        mvc.perform(get("/api/worker/" + WORKER_ID1 + "/status").principal(currentPrincipal))
+        mvc.perform(get("/api/worker/" + worker1.getId() + "/status").principal(currentPrincipal))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(WORKER_ID1)));
+                .andExpect(jsonPath("$.id", is(worker1.getId())));
     }
 
 

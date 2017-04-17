@@ -1,5 +1,6 @@
 package com.github.salvatorenovelli.seo.websiteversioning.crawler;
 
+import com.github.salvatorenovelli.seo.websiteversioning.DefaultWorkerFactory;
 import com.github.salvatorenovelli.seo.websiteversioning.WorkerFactory;
 import org.hamcrest.Matchers;
 import org.junit.Test;
@@ -14,7 +15,7 @@ import static org.junit.Assert.assertThat;
 public class WorkerManagerTest {
 
 
-    private WorkerFactory workerFactory = new WorkerFactory();
+    private WorkerFactory workerFactory = new DefaultWorkerFactory();
     private WorkerManager workerManager = new WorkerManager(workerFactory);
 
     @Test
